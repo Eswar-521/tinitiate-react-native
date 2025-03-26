@@ -2,13 +2,14 @@ import { AuthProvider } from '@/hooks/useAuth';
 import { Slot } from 'expo-router';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from '@/app/(tabs)/home';
-import AboutScreen from '@/app/(tabs)/about';
-import ServicesScreen from '@/app/(tabs)/services';
-import ContactScreen from '@/app/(tabs)/contact';
+import HomeScreen from '@/app/tabs/home';
+import AboutScreen from '@/app/tabs/about';
+import ServicesScreen from '@/app/tabs/services';
+import ContactScreen from '@/app/tabs/contact';
 import LoginScreen from '@/app/login';
 import SignupScreen from '@/app/signup';
 import Layout from '@/app/tabs/_layout';
+
 
 // Create a stack navigator
 const Stack = createStackNavigator();

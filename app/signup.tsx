@@ -1,22 +1,122 @@
-import { View, Text, TextInput, Button } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { useState } from "react";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
+import LeftSidebar from "../components/LeftSidebar";
+import RightSidebar from "../components/RightSidebar";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 export default function SignupScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
   const handleSignup = () => {
-    router.push("/tabs/home"); // Redirect to Home after signup
+    router.push("/tabs/home");
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", padding: 20 }}>
-      <Text style={{ fontSize: 24 }}>Signup</Text>
-      <TextInput placeholder="Email" value={email} onChangeText={setEmail} style={{ borderWidth: 1, padding: 10, marginBottom: 10 }} />
-      <TextInput placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry style={{ borderWidth: 1, padding: 10, marginBottom: 10 }} />
-      <Button title="Signup" onPress={handleSignup} />
-      <Button title="Go to Login" onPress={() => router.push("/login")} />
+    <View style={styles.container}>
+      <Header />
+
+      <View style={styles.content}>
+        <LeftSidebar />
+
+        <View style={styles.centerContainer}>
+          <View style={styles.card}>
+            <Text style={styles.title}>Signup</Text>
+
+            <TextInput 
+              placeholder="Email" 
+              value={email} 
+              onChangeText={setEmail} 
+              style={styles.input} 
+              keyboardType="email-address"
+            />
+
+            <TextInput 
+              placeholder="Password" 
+              value={password} 
+              onChangeText={setPassword} 
+              secureTextEntry 
+              style={styles.input} 
+            />
+
+            <TouchableOpacity style={styles.button} onPress={handleSignup}>
+              <Text style={styles.buttonText}>Signup</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => router.push("/login")}>
+              <Text style={styles.linkText}>Already have an account? Login</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <RightSidebar />
+      </View>
+
+      <Footer />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+  },
+  content: {
+    flex: 1,
+    flexDirection: "row",
+    padding: 20,
+    justifyContent: "space-between",
+  },
+  centerContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  card: {
+    width: 350,
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 12,
+    borderRadius: 8,
+    fontSize: 16,
+    marginBottom: 10,
+    backgroundColor: "#fff",
+  },
+  button: {
+    backgroundColor: "#007AFF",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 10,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  linkText: {
+    textAlign: "center",
+    marginTop: 15,
+    color: "#007AFF",
+    fontSize: 16,
+  },
+});
