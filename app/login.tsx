@@ -1,10 +1,13 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import { useState } from "react";
 import { useRouter } from "expo-router";
-import LeftSidebar from "../components/LeftSidebar";
-import RightSidebar from "../components/RightSidebar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import LeftSidebar from "../components/LeftSidebar";
+import RightSidebar from "../components/RightSidebar";
+
+// Get screen width for responsiveness
+const screenWidth = Dimensions.get("window").width;
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -20,7 +23,8 @@ export default function LoginScreen() {
       <Header />
 
       <View style={styles.content}>
-        <LeftSidebar />
+        {/* Hide Sidebars on Small Screens */}
+        {screenWidth > 600 && <LeftSidebar />}
 
         <View style={styles.centerContainer}>
           <View style={styles.card}>
@@ -32,6 +36,7 @@ export default function LoginScreen() {
               onChangeText={setEmail} 
               style={styles.input} 
               keyboardType="email-address"
+              autoCapitalize="none"
             />
 
             <TextInput 
@@ -52,7 +57,7 @@ export default function LoginScreen() {
           </View>
         </View>
 
-        <RightSidebar />
+        {screenWidth > 600 && <RightSidebar />}
       </View>
 
       <Footer />
@@ -61,62 +66,32 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f5f5f5",
+  container: { flex: 1, backgroundColor: "#f5f5f5" },
+  content: { flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center", padding: 20 },
+  centerContainer: { flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 20 },
+  card: { 
+    width: screenWidth < 400 ? "100%" : 350, 
+    backgroundColor: "#fff", 
+    padding: 20, 
+    borderRadius: 10, 
+    elevation: 5, 
+    shadowColor: "#000", 
+    shadowOpacity: 0.2, 
+    shadowRadius: 5 
   },
-  content: {
-    flex: 1,
-    flexDirection: "row",
-    padding: 20,
-    justifyContent: "space-between",
+  title: { fontSize: 24, fontWeight: "bold", textAlign: "center", marginBottom: 20 },
+  input: { 
+    borderWidth: 1, 
+    borderColor: "#ccc", 
+    padding: 12, 
+    borderRadius: 8, 
+    fontSize: 16, 
+    marginBottom: 10, 
+    backgroundColor: "#fff", 
+    width: "100%" 
   },
-  centerContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  card: {
-    width: 350,
-    backgroundColor: "#fff",
-    padding: 20,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 5,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 12,
-    borderRadius: 8,
-    fontSize: 16,
-    marginBottom: 10,
-    backgroundColor: "#fff",
-  },
-  button: {
-    backgroundColor: "#007AFF",
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 10,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  linkText: {
-    textAlign: "center",
-    marginTop: 15,
-    color: "#007AFF",
-    fontSize: 16,
-  },
+  button: { backgroundColor: "#007AFF", paddingVertical: 12, borderRadius: 8, alignItems: "center", marginTop: 10 },
+  buttonText: { color: "#fff", fontSize: 18, fontWeight: "bold" },
+  linkText: { textAlign: "center", marginTop: 15, color: "#007AFF", fontSize: 16 },
 });
+

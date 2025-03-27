@@ -1,10 +1,20 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Dimensions,
+} from "react-native";
 import { useState } from "react";
 import { useRouter } from "expo-router";
-import LeftSidebar from "../components/LeftSidebar";
-import RightSidebar from "../components/RightSidebar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+
+const { width } = Dimensions.get("window");
 
 export default function SignupScreen() {
   const [email, setEmail] = useState("");
@@ -16,47 +26,42 @@ export default function SignupScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
       <Header />
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.card}>
+          <Text style={styles.title}>Signup</Text>
 
-      <View style={styles.content}>
-        <LeftSidebar />
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            style={styles.input}
+            keyboardType="email-address"
+          />
 
-        <View style={styles.centerContainer}>
-          <View style={styles.card}>
-            <Text style={styles.title}>Signup</Text>
+          <TextInput
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            style={styles.input}
+          />
 
-            <TextInput 
-              placeholder="Email" 
-              value={email} 
-              onChangeText={setEmail} 
-              style={styles.input} 
-              keyboardType="email-address"
-            />
+          <TouchableOpacity style={styles.button} onPress={handleSignup}>
+            <Text style={styles.buttonText}>Signup</Text>
+          </TouchableOpacity>
 
-            <TextInput 
-              placeholder="Password" 
-              value={password} 
-              onChangeText={setPassword} 
-              secureTextEntry 
-              style={styles.input} 
-            />
-
-            <TouchableOpacity style={styles.button} onPress={handleSignup}>
-              <Text style={styles.buttonText}>Signup</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => router.push("/login")}>
-              <Text style={styles.linkText}>Already have an account? Login</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity onPress={() => router.push("/login")}>
+            <Text style={styles.linkText}>Already have an account? Login</Text>
+          </TouchableOpacity>
         </View>
-
-        <RightSidebar />
-      </View>
-
+      </ScrollView>
       <Footer />
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -65,19 +70,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f5f5f5",
   },
-  content: {
-    flex: 1,
-    flexDirection: "row",
-    padding: 20,
-    justifyContent: "space-between",
-  },
-  centerContainer: {
-    flex: 1,
-    alignItems: "center",
+  scrollContent: {
+    flexGrow: 1,
     justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
   },
   card: {
-    width: 350,
+    width: width * 0.9,
+    maxWidth: 400,
     backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
@@ -100,6 +101,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
     backgroundColor: "#fff",
+    width: "100%",
   },
   button: {
     backgroundColor: "#007AFF",
